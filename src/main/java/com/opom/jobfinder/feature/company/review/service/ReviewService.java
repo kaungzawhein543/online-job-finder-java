@@ -12,7 +12,7 @@ public interface ReviewService {
     Review save(Review review,String companyId);
 
     // UPDATE REVIEW
-    Review update(Review review,String companyId);
+    Review update(Review review,String companyId,String reviewId);
 
     // DELETE REVIEW
     void delete(String reviewId);

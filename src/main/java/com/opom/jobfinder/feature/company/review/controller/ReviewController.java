@@ -37,10 +37,10 @@ public class ReviewController {
         return ResponseEntity.ok(BaseResponse.of(MessageConstants.SUCCESS, response, Translator.toLocale(MessageConstants.SUCCESS)));
     }
 
-    @PutMapping("/{id}/reviews")
-    public ResponseEntity<BaseResponse> updateReview(@RequestBody ReviewDTO reviewDTO,@PathVariable String id) {
+    @PutMapping("/{companyId}/reviews/{reviewId}")
+    public ResponseEntity<BaseResponse> updateReview(@RequestBody ReviewDTO reviewDTO,@PathVariable String companyId,@PathVariable String reviewId) {
         Review review = reviewManager.toReview(reviewDTO);
-        Review response = reviewService.update(review, id);
+        Review response = reviewService.update(review, companyId,reviewId);
         return ResponseEntity.ok(BaseResponse.of(MessageConstants.SUCCESS, response, Translator.toLocale(MessageConstants.SUCCESS)));
     }
 

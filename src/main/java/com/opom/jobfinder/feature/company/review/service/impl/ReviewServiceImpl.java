@@ -43,6 +43,7 @@ public class ReviewServiceImpl implements ReviewService {
             if (company.isPresent()) {
                 Applicant applicant = applicantService.findById(authService.getLoginUserId());
                 review.setApplicant(applicant);
+                review.setStatus(true);
                 review.setCompany(company.get());
             } else {
                 throw new BadRequestException("Company Not Found!");
@@ -52,13 +53,17 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review update(Review review,String companyId) {
+    public Review update(Review review,String companyId,String reviewId) {
         if(companyId == null || companyId.length() != 36) {
             throw new BadRequestException("Company Id is not valid!");
         } else {
             Optional<Company> company = companyRepo.findById(UUID.fromString(companyId));
-            Optional<Review> review1 = reviewRepo.findById(review.getId());
+            Optional<Review> review1 = reviewRepo.findById(UUID.fromString(reviewId));
             if (company.isPresent() && review1.isPresent()) {
+                Applicant applicant = applicantService.findById(authService.getLoginUserId());
+                review.setId(UUID.fromString(reviewId));
+                review.setCreatedAt(review1.get().getCreatedAt());
+                review.setApplicant(applicant);
                 review.setCompany(company.get());
             } else {
                 throw new BadRequestException("Company Not Found!");
@@ -73,6 +78,7 @@ public class ReviewServiceImpl implements ReviewService {
         if (review.isPresent()) {
             review.get().setStatus(false);
             Review deletedReview = review.get();
+            deletedReview.setStatus(false);
             reviewRepo.save(deletedReview);
         } else {
             throw new BadRequestException("Review Not Found!");

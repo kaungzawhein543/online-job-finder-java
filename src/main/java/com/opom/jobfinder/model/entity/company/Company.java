@@ -21,6 +21,7 @@ public class Company extends AbstractEntity {
     private UUID id;
 
     private String phone;
+    private String email;
     private String website;
     private String address;
     private String description;
